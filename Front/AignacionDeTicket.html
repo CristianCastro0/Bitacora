@@ -1,0 +1,379 @@
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bitácora</title>
+    <link rel="stylesheet" href="CSS/StyleAsignacionTicket.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="logo-container">
+          <h1 class="logo">Bitácora</h1>
+        </div>
+
+        <nav class="menu">
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>Gestión de Tickets</span>
+              <img
+                src="Imagenes/Flechas/flecha-hacia-abajo-para-navegar.png"
+                alt="Flecha"
+                class="arrow-img"
+              />
+            </button>
+            <div class="accordion-content">
+              <a href="AignacionDeTicket.html">Asignación de Tickets</a>
+              <a href="InformacionDeTicket.html">Información de Tickets</a>
+              <a href="AmpliacionEdicionHoras.html">Ampliación y Edición de Horas</a>
+              <a href="AsignarTareas.html">Asignar Tareas</a>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>Gestión de Usuarios</span>
+              <img
+                src="Imagenes/Flechas/flecha-hacia-abajo-para-navegar.png"
+                alt="Flecha"
+                class="arrow-img"
+              />
+            </button>
+            <div class="accordion-content">
+              <a href="MaestroDeUsuarios.html">Maestro de Usuarios</a>
+            </div>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- CONTENIDO CENTRAL -->
+      <main class="main-content">
+        <!-- TOPBAR -->
+        <header class="topbar">
+          <div class="user-box">
+            <span id="correoUsuarioActual">Cargando...</span>
+            <button type="button" id="cerrarSesionBtn" class="logout-btn">Cerrar sesión</button>
+          </div>
+        </header>
+
+        <!-- CONTENIDO -->
+        <section class="ticket-page">
+          <a href="Inicio.html" class="back-link">← Volver</a>
+
+          <!-- CARD SUPERIOR -->
+          <div class="ticket-filter-card">
+            <div class="ticket-card-top">
+              <h2>Asignación de Tickets</h2>
+
+              <div class="search-box">
+                <input
+                  type="text"
+                  id="searchInput"
+                  placeholder="Busca Nombre, Estado"
+                />
+                <button type="button" class="search-btn">🔍</button>
+              </div>
+            </div>
+
+            <div class="excel-export-row">
+              <button type="button" id="exportarExcelBtn" class="excel-export-btn">
+                📊 Exportar a Excel
+              </button>
+            </div>
+
+            <div class="ticket-options">
+              <label class="radio-option">
+                <input type="radio" name="estadoFiltro" value="Asignado" />
+                <span class="custom-radio"></span>
+                <span>Asignado</span>
+              </label>
+
+              <label class="radio-option">
+                <input type="radio" name="estadoFiltro" value="Por Asignar" />
+                <span class="custom-radio"></span>
+                <span>Por Asignar</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- TABLA -->
+          <div class="table-wrapper">
+            <table class="ticket-table">
+              <thead>
+                <tr>
+                  <th>Senior</th>
+                  <th>Codigo Ticket</th>
+                  <th>Estado</th>
+                  <th>Fecha Asignación</th>
+                  <th>Horas Senior</th>
+                  <th>Horas Desarrollo</th>
+                  <th>Horas Calidad</th>
+                  <th>Desarrollo</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="ticketTableBody">
+                <!-- Las filas las genera ScriptAsignacionTicket.js con los datos
+                     que devuelve GET /Api/Ticket/ConsultarTicketsAsignacion -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination-wrapper" id="paginacionAsignacion">
+            <button type="button" id="paginaAnteriorBtn" class="pagination-btn">‹ Anterior</button>
+            <span id="paginaIndicador" class="pagination-info">Página 1 de 1</span>
+            <button type="button" id="paginaSiguienteBtn" class="pagination-btn">Siguiente ›</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- MODAL EDITAR TICKET -->
+    <div class="modal-overlay" id="editTicketModal">
+      <div class="edit-modal">
+        <div class="edit-modal-header">
+          <h2>Editar ticket</h2>
+          <button class="close-modal-btn" id="closeEditModalBtn" type="button">
+            ✕
+          </button>
+        </div>
+
+        <div class="edit-modal-body">
+          <div class="readonly-card">
+            <h3>ASIGNACIÓN DEL TICKET (SOLO LECTURA)</h3>
+
+            <div class="form-group">
+              <label for="modalCodigo">Código del ticket</label>
+              <input type="text" id="modalCodigo" readonly />
+            </div>
+
+            <div class="form-group">
+              <label for="modalTipo">Tipo</label>
+              <input type="text" id="modalTipo" readonly />
+            </div>
+
+            <div class="form-group">
+              <label for="modalNombre">Senior</label>
+              <input type="text" id="modalNombre" readonly />
+            </div>
+          </div>
+
+          <div class="edit-fields-section">
+            <h3>CAMPOS DE EDICIÓN</h3>
+            <p class="page-hint">
+              Las horas no se editan aquí porque son compartidas — para
+              corregirlas usa "Ampliar horas". Aquí solo se pueden agregar
+              más personas a Desarrollo o Calidad.
+            </p>
+
+            <div class="form-row-horas">
+              <div class="form-group">
+                <label for="modalHorasSenior">Horas Senior</label>
+                <input type="number" id="modalHorasSenior" readonly />
+              </div>
+
+              <div class="form-group">
+                <label for="modalHorasDesarrollo">Horas Desarrollo</label>
+                <input type="number" id="modalHorasDesarrollo" readonly />
+              </div>
+
+              <div class="form-group">
+                <label for="modalHorasCalidad">Horas Calidad</label>
+                <input type="number" id="modalHorasCalidad" readonly />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="modalDesarrolloInput">Colaboradores Desarrolladores</label>
+              <div class="collaborator-input-wrap">
+                <input
+                  type="text"
+                  id="modalDesarrolloInput"
+                  placeholder="Añadir Desarrollador"
+                  list="usuariosDesarrolloList"
+                />
+                <button type="button" id="addEditDesarrolloBtn" class="mini-search-btn">
+                  🔍
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Lista de Desarrolladores</label>
+              <div class="collaborator-list" id="editDesarrolloList"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="modalCalidadInput">Colaboradores de Calidad</label>
+              <div class="collaborator-input-wrap">
+                <input
+                  type="text"
+                  id="modalCalidadInput"
+                  placeholder="Añadir de Calidad"
+                  list="usuariosCalidadList"
+                />
+                <button type="button" id="addEditCalidadBtn" class="mini-search-btn">
+                  🔍
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Lista de Calidad</label>
+              <div class="collaborator-list" id="editCalidadList"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="edit-modal-footer">
+          <button type="button" class="btn-secondary" id="cancelEditBtn">
+            CANCELAR
+          </button>
+          <button type="button" class="btn-primary" id="saveEditBtn">
+            GUARDAR CAMBIOS
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL ASIGNAR TICKET -->
+    <div class="modal-overlay" id="assignTicketModal">
+      <div class="edit-modal">
+        <div class="edit-modal-header">
+          <h2>Asignar ticket</h2>
+          <button
+            class="close-modal-btn"
+            id="closeAssignModalBtn"
+            type="button"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div class="edit-modal-body">
+          <div class="readonly-card">
+            <h3>ASIGNACIÓN DEL TICKET (SOLO LECTURA)</h3>
+
+            <div class="form-group">
+              <label for="assignModalCodigo">Código del ticket</label>
+              <input type="text" id="assignModalCodigo" readonly />
+            </div>
+
+            <div class="form-group">
+              <label for="assignModalTipo">Tipo</label>
+              <input type="text" id="assignModalTipo" readonly />
+            </div>
+
+            <div class="form-group">
+              <label for="assignModalNombre">Senior</label>
+              <input type="text" id="assignModalNombre" readonly />
+            </div>
+          </div>
+
+          <div class="edit-fields-section">
+            <h3>CAMPOS DE EDICIÓN</h3>
+
+            <div class="form-row-horas">
+              <div class="form-group">
+                <label for="assignModalHorasSenior">Horas Senior</label>
+                <input
+                  type="number"
+                  id="assignModalHorasSenior"
+                  min="0"
+                  placeholder="Horas del senior"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="assignModalHorasDesarrollo">Horas Desarrollo</label>
+                <input
+                  type="number"
+                  id="assignModalHorasDesarrollo"
+                  min="0"
+                  placeholder="Horas de desarrollo"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="assignModalHorasCalidad">Horas Calidad</label>
+                <input
+                  type="number"
+                  id="assignModalHorasCalidad"
+                  min="0"
+                  placeholder="Horas de calidad"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="assignModalDesarrolloInput">Colaboradores Desarrolladores</label>
+              <div class="collaborator-input-wrap">
+                <input
+                  type="text"
+                  id="assignModalDesarrolloInput"
+                  placeholder="Añadir Desarrollador"
+                  list="usuariosDesarrolloList"
+                />
+                <button
+                  type="button"
+                  id="addAssignDesarrolloBtn"
+                  class="mini-search-btn"
+                >
+                  🔍
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Lista de Desarrolladores</label>
+              <div class="collaborator-list" id="assignDesarrolloList"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="assignModalCalidadInput">Colaboradores de Calidad</label>
+              <div class="collaborator-input-wrap">
+                <input
+                  type="text"
+                  id="assignModalCalidadInput"
+                  placeholder="Añadir de Calidad"
+                  list="usuariosCalidadList"
+                />
+                <button
+                  type="button"
+                  id="addAssignCalidadBtn"
+                  class="mini-search-btn"
+                >
+                  🔍
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Lista de Calidad</label>
+              <div class="collaborator-list" id="assignCalidadList"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="edit-modal-footer">
+          <button type="button" class="btn-secondary" id="cancelAssignBtn">
+            CANCELAR
+          </button>
+          <button type="button" class="btn-primary" id="saveAssignBtn">
+            ASIGNAR TICKET
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <datalist id="usuariosMaestroList"></datalist>
+    <datalist id="usuariosDesarrolloList"></datalist>
+    <datalist id="usuariosCalidadList"></datalist>
+
+    <script src="JS/ApiService.js" ></script>
+    <script src="JS/ScriptAsignacionTicket.js"></script>
+  </body>
+</html>

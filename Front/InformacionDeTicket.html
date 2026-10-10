@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bitácora</title>
+    <link rel="stylesheet" href="CSS/StyleInformacionTicket.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <!--SIDEBAR-->
+      <aside class="sidebar">
+        <div class="logo-container">
+          <h1 class="logo">Bitácora</h1>
+        </div>
+
+        <nav class="menu">
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>Gestión de Tickets</span>
+              <img
+                src="Imagenes/Flechas/flecha-hacia-abajo-para-navegar.png"
+                alt="Flecha"
+                class="arrow-img"
+              />
+            </button>
+            <div class="accordion-content">
+              <a href="AignacionDeTicket.html">Asignación de tickets</a>
+              <a href="InformacionDeTicket.html">Información de Tickets</a>
+              <a href="AmpliacionEdicionHoras.html">Ampliación y Edición de Horas</a>
+              <a href="AsignarTareas.html">Asignar Tareas</a>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>Gestión de Usuarios</span>
+              <img
+                src="Imagenes/Flechas/flecha-hacia-abajo-para-navegar.png"
+                alt="Flecha"
+                class="arrow-img"
+              />
+            </button>
+            <div class="accordion-content">
+              <a href="MaestroDeUsuarios.html">Maestro de Usuarios</a>
+            </div>
+          </div>
+        </nav>
+      </aside>
+
+      <!--CONTENIDO CENTRAL-->
+      <main class="main-content">
+        <!--TOPBAR-->
+        <header class="topbar">
+          <div class="user-box">
+           <span id="correoUsuarioActual">Cargando...</span>
+            <button type="button" id="cerrarSesionBtn" class="logout-btn">Cerrar sesión</button>
+          </div>
+        </header>
+
+        <!--CONTENIDO-->
+        <section class="Information-page">
+          <a href="Inicio.html" class="back-link">← Volver</a>
+
+          <!--CARD SUPERIOR-->
+          <div class="Information-filter-card">
+            <div class="Information-card-top">
+              <h2>Información de Tickets</h2>
+
+              <div class="search-box">
+                <input
+                  type="text"
+                  id="searchInput"
+                  placeholder="Buscar Codigo, Campaña"
+                />
+                <button type="button" class="search-btn">🔍</button>
+              </div>
+            </div>
+
+            <div class="csv-upload-row">
+              <input type="file" id="csvFileInput" accept=".csv" hidden />
+              <button type="button" id="csvUploadBtn" class="csv-upload-btn">
+                📤 Cargar CSV
+              </button>
+              <span id="csvUploadStatus" class="csv-upload-status"></span>
+            </div>
+
+            <div class="Information-option">
+              <label class="radio-option">
+                <input type="radio" name="estadoFiltro" value="Abierto" />
+                <span class="custom-radio"></span>
+                <span>Abierto</span>
+              </label>
+
+              <lable class="radio-option">
+                <input type="radio" name="estadoFiltro" value="Resuelto" />
+                <span class="custom-radio"></span>
+                <span>Resuelto</span>
+              </lable>
+
+              <lable class="radio-option">
+                <input type="radio" name="estadoFiltro" value="Cerrado" />
+                <span class="custom-radio"></span>
+                <span>Cerrado</span>
+              </lable>
+
+              <lable class="radio-option">
+                <input type="radio" name="estadoFiltro" value="Cancelado" />
+                <span class="custom-radio"></span>
+                <span>Cancelado</span>
+              </lable>
+            </div>
+          </div>
+
+          <!--TABLA-->
+          <div class="table-wrapper">
+            <table class="Information-table">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Senior</th>
+                  <th>Campaña</th>
+                  <th>Estado</th>
+                  <th>Descripcion</th>
+                  <th>Fecha de Creación</th>
+                  <th>Detalles</th>
+                </tr>
+              </thead>
+
+              <tbody id="InformationTableBody">
+                <!-- Las filas las genera ScriptInformacionTicket.js con los datos
+                     que devuelve GET /Api/Ticket/ConsultarTicketsGrilla -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination-wrapper" id="paginacionInformacion">
+            <button type="button" id="paginaAnteriorBtn" class="pagination-btn">‹ Anterior</button>
+            <span id="paginaIndicador" class="pagination-info">Página 1 de 1</span>
+            <button type="button" id="paginaSiguienteBtn" class="pagination-btn">Siguiente ›</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="JS/ApiService.js" ></script>
+    <script src="JS/ScriptInformacionTicket.js"></script>
+  </body>
+</html>

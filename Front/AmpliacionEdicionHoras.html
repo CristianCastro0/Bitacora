@@ -1,0 +1,289 @@
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bitácora</title>
+    <link rel="stylesheet" href="CSS/StyleAmpliacionEdicionHoras.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="logo-container">
+          <h1 class="logo">Bitácora</h1>
+        </div>
+
+        <nav class="menu">
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>Gestión de Tickets</span>
+              <img
+                src="Imagenes/Flechas/flecha-hacia-abajo-para-navegar.png"
+                alt="Flecha"
+                class="arrow-img"
+              />
+            </button>
+            <div class="accordion-content">
+              <a href="AignacionDeTicket.html">Asignación de Tickets</a>
+              <a href="InformacionDeTicket.html">Información de Tickets</a>
+              <a href="AmpliacionEdicionHoras.html">Ampliación y Edición de Horas</a>
+              <a href="AsignarTareas.html">Asignar Tareas</a>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>Gestión de Usuarios</span>
+              <img
+                src="Imagenes/Flechas/flecha-hacia-abajo-para-navegar.png"
+                alt="Flecha"
+                class="arrow-img"
+              />
+            </button>
+            <div class="accordion-content">
+              <a href="MaestroDeUsuarios.html">Maestro de Usuarios</a>
+            </div>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- CONTENIDO CENTRAL -->
+      <main class="main-content">
+        <!-- TOPBAR -->
+        <header class="topbar">
+          <div class="user-box">
+            <span id="correoUsuarioActual">Cargando...</span>
+            <button type="button" id="cerrarSesionBtn" class="logout-btn">Cerrar sesión</button>
+          </div>
+        </header>
+
+        <!-- CONTENIDO -->
+        <section class="ticket-page">
+          <a href="Inicio.html" class="back-link">← Volver</a>
+
+          <!-- CARD SUPERIOR -->
+          <div class="ticket-filter-card">
+            <div class="ticket-card-top">
+              <h2>Ampliación y Edición de Horas</h2>
+
+              <div class="search-box">
+                <input
+                  type="text"
+                  id="searchInput"
+                  placeholder="Busca Nombre, Código"
+                />
+                <button type="button" class="search-btn">🔍</button>
+              </div>
+            </div>
+            <p class="page-hint">
+              Solo se muestran los tickets que ya tienen una asignación (con horas
+              programadas) — son los únicos a los que se les puede ampliar horas.
+            </p>
+          </div>
+
+          <!-- TABLA -->
+          <div class="table-wrapper">
+            <table class="ticket-table">
+              <thead>
+                <tr>
+                  <th>Senior</th>
+                  <th>Codigo Ticket</th>
+                  <th>Estado</th>
+                  <th>Horas Senior</th>
+                  <th>Horas Desarrollo</th>
+                  <th>Horas Calidad</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="ticketTableBody">
+                <!-- Las filas las genera ScriptAmpliacionEdicionHoras.js, filtrando
+                     a solo "Asignado" los datos que devuelve
+                     GET /Api/Ticket/ConsultarTicketsAsignacion -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination-wrapper" id="paginacionAmpliacion">
+            <button type="button" id="paginaAnteriorBtn" class="pagination-btn">‹ Anterior</button>
+            <span id="paginaIndicador" class="pagination-info">Página 1 de 1</span>
+            <button type="button" id="paginaSiguienteBtn" class="pagination-btn">Siguiente ›</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- MODAL AMPLIAR HORAS -->
+    <div class="modal-overlay" id="ampliarModal">
+      <div class="edit-modal">
+        <div class="edit-modal-header">
+          <h2>Ampliar horas</h2>
+          <button class="close-modal-btn" id="closeAmpliarModalBtn" type="button">
+            ✕
+          </button>
+        </div>
+
+        <div class="edit-modal-body">
+          <div class="readonly-card">
+            <h3>TICKET (SOLO LECTURA)</h3>
+
+            <div class="form-group">
+              <label for="ampliarModalCodigo">Código del ticket</label>
+              <input type="text" id="ampliarModalCodigo" readonly />
+            </div>
+
+            <div class="form-group">
+              <label for="ampliarModalSenior">Senior</label>
+              <input type="text" id="ampliarModalSenior" readonly />
+            </div>
+
+            <div class="form-group">
+              <label for="ampliarModalHorasActuales">Horas ya asignadas</label>
+              <input type="text" id="ampliarModalHorasActuales" readonly />
+            </div>
+          </div>
+
+          <div class="edit-fields-section">
+            <h3>NUEVA AMPLIACIÓN</h3>
+
+            <div class="form-group">
+              <label>¿A qué categoría va esta ampliación?</label>
+              <div class="categoria-options">
+                <label class="radio-option">
+                  <input type="radio" name="categoriaAmpliacion" value="Senior" />
+                  <span class="custom-radio"></span>
+                  <span>Senior</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="categoriaAmpliacion" value="Desarrollo" />
+                  <span class="custom-radio"></span>
+                  <span>Desarrollo</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="categoriaAmpliacion" value="Calidad" />
+                  <span class="custom-radio"></span>
+                  <span>Calidad</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="ampliarModalHoras">Horas a ampliar</label>
+              <input
+                type="number"
+                id="ampliarModalHoras"
+                min="0.01"
+                step="0.01"
+                placeholder="Elige una categoría primero"
+                disabled
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="ampliarModalObservacion">Observación</label>
+              <textarea
+                id="ampliarModalObservacion"
+                rows="4"
+                placeholder="Elige una categoría primero"
+                disabled
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="edit-modal-footer">
+          <button type="button" class="btn-secondary" id="cancelAmpliarBtn">
+            CANCELAR
+          </button>
+          <button type="button" class="btn-primary" id="saveAmpliarBtn">
+            GUARDAR AMPLIACIÓN
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL EDITAR HORA (primera vez) -->
+    <div class="modal-overlay" id="editarHoraModal">
+      <div class="edit-modal">
+        <div class="edit-modal-header">
+          <h2>Editar hora</h2>
+          <button class="close-modal-btn" id="closeEditarHoraModalBtn" type="button">
+            ✕
+          </button>
+        </div>
+
+        <div class="edit-modal-body">
+          <p class="page-hint">
+            Esto es solo para ponerle hora por primera vez a una categoría que
+            todavía no tiene ninguna (quedó en blanco). Si la categoría ya
+            tiene horas, esto no las va a cambiar — para eso usa "Ampliar".
+          </p>
+
+          <div class="readonly-card">
+            <h3>TICKET (SOLO LECTURA)</h3>
+
+            <div class="form-group">
+              <label for="editarHoraModalCodigo">Código del ticket</label>
+              <input type="text" id="editarHoraModalCodigo" readonly />
+            </div>
+
+            <div class="form-group">
+              <label for="editarHoraModalSenior">Senior</label>
+              <input type="text" id="editarHoraModalSenior" readonly />
+            </div>
+          </div>
+
+          <div class="edit-fields-section">
+            <h3>CATEGORÍA SIN HORA</h3>
+
+            <div class="form-group">
+              <label>¿A cuál categoría le vas a poner la hora?</label>
+              <div class="categoria-options">
+                <label class="radio-option">
+                  <input type="radio" name="categoriaEditarHora" value="Senior" />
+                  <span class="custom-radio"></span>
+                  <span>Senior</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="categoriaEditarHora" value="Desarrollo" />
+                  <span class="custom-radio"></span>
+                  <span>Desarrollo</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="categoriaEditarHora" value="Calidad" />
+                  <span class="custom-radio"></span>
+                  <span>Calidad</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="editarHoraModalHoras">Horas</label>
+              <input
+                type="number"
+                id="editarHoraModalHoras"
+                min="0.01"
+                step="0.01"
+                placeholder="Elige una categoría primero"
+                disabled
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="edit-modal-footer">
+          <button type="button" class="btn-secondary" id="cancelEditarHoraBtn">
+            CANCELAR
+          </button>
+          <button type="button" class="btn-primary" id="saveEditarHoraBtn">
+            GUARDAR HORA
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="JS/ApiService.js"></script>
+    <script src="JS/ScriptAmpliacionEdicionHoras.js"></script>
+  </body>
+</html>

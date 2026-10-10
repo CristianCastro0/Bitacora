@@ -1,0 +1,84 @@
+ALTER PROCEDURE [dbo].[SPR_GI_USUARIO]
+    @PI_DIRECTORIO VARCHAR(100),
+    @PI_CORREO VARCHAR(100),
+    @PI_NOMBRE1 VARCHAR(100),
+    @PI_APELLIDO1 VARCHAR(100),
+    @PI_NOMBRE2 VARCHAR(100),
+    @PI_APELLIDO2 VARCHAR(100)
+AS
+BEGIN
+
+    SET NOCOUNT ON;
+
+    IF NOT EXISTS
+    (
+        SELECT 1
+        FROM TBL_RUSUARIO
+        WHERE USU_CDIRECTORIO = @PI_DIRECTORIO
+    )
+    BEGIN
+
+        DECLARE @NOM_ID BIGINT;
+        DECLARE @ROL_ID BIGINT = 4;
+
+        IF @PI_DIRECTORIO IN
+        (
+            'TUEMPRESA\admin1',
+            'TUEMPRESA\admin2',
+            'TUEMPRESA\admin3'
+        )
+        BEGIN
+            SET @ROL_ID = 1;
+        END
+
+        INSERT INTO TBL_RNOMBRE
+        (
+            NOM_CNOMBRE1,
+            NOM_CNOMBRE2,
+            NOM_CAPELLIDO1,
+            NOM_CAPELLIDO2
+        )
+        VALUES
+        (
+            @PI_NOMBRE1,
+            @PI_NOMBRE2,
+            @PI_APELLIDO1,
+            @PI_APELLIDO2
+        );
+
+        SET @NOM_ID = SCOPE_IDENTITY();
+
+        INSERT INTO TBL_RUSUARIO
+        (
+            NOM_NID,
+            USU_CCORREO,
+            USU_CDIRECTORIO,
+            ROL_NID,
+            ESU_NID
+        )
+        VALUES
+        (
+            @NOM_ID,
+            @PI_CORREO,
+            @PI_DIRECTORIO,
+            @ROL_ID,
+            1
+        );
+
+    END
+
+    SELECT
+        u.USU_NID AS Id,
+        u.USU_CDIRECTORIO AS Directorio,
+        u.USU_CCORREO AS Correo,
+        n.NOM_CNOMBRE1 AS Nombre,
+        n.NOM_CAPELLIDO1 AS Apellido,
+        r.ROL_CNOMBRE AS Rol
+    FROM TBL_RUSUARIO u
+    INNER JOIN TBL_RNOMBRE n
+        ON u.NOM_NID = n.NOM_NID
+    inner JOIN TBL_RROL r
+    ON r.ROL_NID = U.ROL_NID
+    WHERE u.USU_CDIRECTORIO = @PI_DIRECTORIO;
+
+END

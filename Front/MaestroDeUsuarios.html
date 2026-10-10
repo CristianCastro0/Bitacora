@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bitácora</title>
+    <link rel="stylesheet" href="CSS/StyleMaestroDeUsuarios.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="logo-container">
+          <h1 class="logo">Bitácora</h1>
+        </div>
+
+        <nav class="menu">
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>Gestión de Tickets</span>
+              <img
+                src="Imagenes/Flechas/flecha-hacia-abajo-para-navegar.png"
+                alt="Flecha"
+                class="arrow-img"
+              />
+            </button>
+            <div class="accordion-content">
+              <a href="AignacionDeTicket.html">Asignación de Ticket</a>
+              <a href="InformacionDeTicket.html">Información de Ticket</a>
+              <a href="AmpliacionEdicionHoras.html">Ampliación y Edición de Horas</a>
+              <a href="AsignarTareas.html">Asignar Tareas</a>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>Gestión de Usuarios</span
+              ><img
+                src="Imagenes/Flechas/flecha-hacia-abajo-para-navegar.png"
+                alt="Flecha"
+                class="arrow-img"
+              />
+            </button>
+            <div class="accordion-content">
+              <a href="MaestroDeUsuarios.html">Maestro de Usuarios</a>
+            </div>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- CONENIDO CENTRAL -->
+      <main class="main-content">
+        <!-- TOPBAR -->
+        <header class="topbar">
+          <div class="user-box">
+            <span id="correoUsuarioActual">Cargando...</span>
+            <button type="button" id="cerrarSesionBtn" class="logout-btn">Cerrar sesión</button>
+          </div>
+        </header>
+
+        <!-- CONTENIDO -->
+        <section class="gestionusuarios-page">
+          <a href="Inicio.html" class="back-link">← Volver</a>
+
+          <!-- CARD SUPERIOR -->
+          <div class="usuario-filter-card">
+            <div class="usuario-card-top">
+              <h2>Gestión de Usuarios</h2>
+
+              <div class="search-box">
+                <input
+                  type="text"
+                  id="searchInput"
+                  placeholder="Buscar Nombre, Correo o Rol"
+                />
+                <button type="button" class="search-btn">🔍</button>
+              </div>
+            </div>
+
+            <div class="usuario-options">
+              <label class="radio-option">
+                <input type="radio" name="estadoFiltro" value="Activo" />
+                <span class="custom-radio"></span>
+                <span>Activos</span>
+              </label>
+
+              <label class="radio-option">
+                <input type="radio" name="estadoFiltro" value="Inactivo" />
+                <span class="custom-radio"></span>
+                <span>Inactivos</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- TABLA -->
+          <div class="table-wrapper">
+            <table class="usuario-table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Correo</th>
+                  <th>Rol</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="usuarioTableBody">
+                <!-- Las filas las genera ScriptMaestroDeUsuarios.js con los datos
+                     que devuelve GET /Api/Usuario/ObtenerUsuarios -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination-wrapper" id="paginacionUsuarios">
+            <button type="button" id="paginaAnteriorBtn" class="pagination-btn">‹ Anterior</button>
+            <span id="paginaIndicador" class="pagination-info">Página 1 de 1</span>
+            <button type="button" id="paginaSiguienteBtn" class="pagination-btn">Siguiente ›</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- MODAL EDITAR USUARIO -->
+    <div class="modal-overlay" id="editUserModal">
+      <div class="edit-modal">
+        <div class="edit-modal-header">
+          <h2>Editar usuario</h2>
+          <button
+            class="close-modal-btn"
+            id="closeEditUserModalBtn"
+            type="button"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div class="edit-modal-body">
+          <div class="readonly-card">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="editPrimerNombre">Primer nombre</label>
+                <input type="text" id="editPrimerNombre" />
+              </div>
+              <div class="form-group">
+                <label for="editSegundoNombre">Segundo nombre</label>
+                <input type="text" id="editSegundoNombre" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="editPrimerApellido">Primer apellido</label>
+                <input type="text" id="editPrimerApellido" />
+              </div>
+              <div class="form-group">
+                <label for="editSegundoApellido">Segundo apellido</label>
+                <input type="text" id="editSegundoApellido" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="editCorreo">Correo</label>
+              <input type="text" id="editCorreo" readonly />
+            </div>
+
+            <div class="form-group">
+              <label for="editRol">Rol</label>
+              <select id="editRol">
+                <option value="Experto">Experto</option>
+                <option value="Administrador">Administrador</option>
+                <option value="Usuario">Usuario</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="editEstado">Estado</label>
+              <select id="editEstado">
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="edit-modal-footer">
+          <button type="button" class="btn-secondary" id="cancelEditUserBtn">
+            CANCELAR
+          </button>
+          <button type="button" class="btn-primary" id="saveEditUserBtn">
+            GUARDAR
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="JS/ApiService.js"></script>
+    <script src="JS/ScriptMaestroDeUsuarios.js"></script>
+  </body>
+</html>

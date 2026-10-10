@@ -1,0 +1,25 @@
+ALTER PROCEDURE [dbo].[SPR_GET_USUARIOS]
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	    SELECT 
+        u.USU_NID AS Id,
+        u.USU_CCORREO AS Correo,
+        ISNULL(n.NOM_CNOMBRE1,'') + ' ' +
+        ISNULL(n.NOM_CNOMBRE2,'') + ' ' +
+        ISNULL(n.NOM_CAPELLIDO1,'') + ' ' +
+        ISNULL(n.NOM_CAPELLIDO2,'') AS Nombre,
+        e.ESU_CNOMBRE AS Estado,
+        r.ROL_CNOMBRE AS Rol
+
+        FROM TBL_RUSUARIO u
+        INNER JOIN TBL_RNOMBRE n
+        ON u.NOM_NID = n.NOM_NID
+        INNER JOIN TBL_RESTADOUSUARIO e
+        ON u.ESU_NID = e.ESU_NID
+        INNER JOIN TBL_RROL r
+        ON u.ROL_NID = r.ROL_NID
+
+END

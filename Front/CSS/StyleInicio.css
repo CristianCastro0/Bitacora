@@ -1,0 +1,230 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #e9e9e9;
+}
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 330px;
+  background-color: #3d2436;
+  color: white;
+  border-right: 1px solid #8f8f8f;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-container {
+  padding: 24px 20px;
+  border-bottom: 1px solid #8f8f8f;
+}
+
+.logo {
+  font-size: 58px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  line-height: 1;
+  color: white;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+  font-family: "Mogra", cursive;
+}
+
+/* MENU */
+.menu {
+  padding: 18px 14px;
+}
+
+.accordion-item {
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  background-color: #2e1b28;
+}
+
+.accordion-header {
+  width: 100%;
+  background-color: #5c3a4f;
+  color: white;
+  border: none;
+  outline: none;
+  padding: 22px 20px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.arrow-img {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.accordion-item.active .arrow-img {
+  transform: rotate(180deg);
+}
+
+.accordion-header:hover {
+  background-color: #c08a3e;
+}
+
+.accordion-content {
+  display: none;
+  flex-direction: column;
+  background-color: #4a2c3f;
+}
+
+.accordion-item.active .accordion-content {
+  display: flex;
+}
+
+.accordion-content a {
+  color: white;
+  text-decoration: none;
+  padding: 18px 22px;
+  font-size: 16px;
+  line-height: 3.6;
+  transition: background 0.3s ease;
+}
+
+.accordion-content a:hover {
+  background-color: #c08a3e;
+}
+
+/* MAIN */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #efefef;
+}
+
+/* TOPBAR */
+.topbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 18px 24px;
+}
+
+.user-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #dcdcdc;
+  padding: 10px 16px;
+  border-radius: 14px;
+  font-size: 16px;
+  color: #222;
+}
+
+.logout-btn {
+  border: none;
+  background: transparent;
+  color: #3d2436;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+
+.user-box i {
+  font-size: 20px;
+}
+
+.user.icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+/* WELCOME SECTION */
+.welcome-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 90px;
+  text-align: center;
+}
+
+.welcome-section h2 {
+  font-size: 64px;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: #000;
+}
+
+.letter {
+  font-size: 44px;
+  margin-bottom: 22px;
+  color: #000;
+}
+
+.brand {
+  font-size: 36px;
+  font-family: "Courier New", Courier, monospace;
+  color: #000;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .sidebar {
+    width: 260px;
+  }
+
+  .logo {
+    font-size: 42px;
+  }
+
+  .ticket-page {
+    padding: 10px 20px 30px 20px;
+  }
+
+  .ticket-card-top h2 {
+    font-size: 30px;
+  }
+
+  .ticket-options {
+    gap: 30px;
+  }
+
+  .radio-option {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 700px) {
+  .app-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+
+  .topbar {
+    justify-content: center;
+    padding: 16px 20px;
+  }
+
+  .welcome-section {
+    padding: 50px 20px;
+  }
+}

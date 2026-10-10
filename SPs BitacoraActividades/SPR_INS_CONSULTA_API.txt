@@ -1,0 +1,47 @@
+ALTER  PROCEDURE [dbo].[SPR_INS_CONSULTA_API]
+ @PI_PROCESO AS bigint,
+ @PI_CON_CMETODO AS varchar(200),
+ @PI_CON_CDATOS_ENTRADA AS varchar(2000),
+ @PI_CON_CDATOS_SALIDA AS varchar(2000) = NULL,
+ @PI_CON_CRESULTADO AS varchar(100),
+ @PI_CON_CMSJ_ERROR AS varchar(5000) = NULL
+AS
+BEGIN
+
+
+	IF @PI_PROCESO = 1 -- INSERTA CONSULTA 
+	BEGIN
+		INSERT INTO [dbo].[TBL_TCONSULTA_API]
+           ([CON_DFECHA_REGISTRO]
+           ,[CON_CMETODO]
+           ,[CON_CDATOS_ENTRADA]
+           ,[CON_CDATOS_SALIDA]
+           ,[CON_CRESULTADO])
+		VALUES
+           (GETDATE()
+           ,@PI_CON_CMETODO
+           ,@PI_CON_CDATOS_ENTRADA
+           ,@PI_CON_CDATOS_SALIDA
+           ,@PI_CON_CRESULTADO)
+		   select SCOPE_IDENTITY() as id
+	END
+	ELSE IF @PI_PROCESO = 2 -- INSERTA ERROR
+	BEGIN
+		INSERT INTO [dbo].[TBL_TCONSULTA_API]
+           ([CON_DFECHA_REGISTRO]
+           ,[CON_CMETODO]
+           ,[CON_CDATOS_ENTRADA]
+           ,[CON_CDATOS_SALIDA]
+           ,[CON_CRESULTADO]
+           ,[CON_CMSJ_ERROR])
+		VALUES
+           (GETDATE()
+           ,@PI_CON_CMETODO
+           ,@PI_CON_CDATOS_ENTRADA
+           ,@PI_CON_CDATOS_SALIDA
+           ,@PI_CON_CRESULTADO
+           ,@PI_CON_CMSJ_ERROR)
+		    select SCOPE_IDENTITY() as id
+	END
+
+END

@@ -1,0 +1,30 @@
+ALTER PROCEDURE [dbo].[SPR_GET_REPORTE_TICKET]
+AS
+BEGIN
+
+	--SET NOCOUNT ON;
+
+	    SELECT
+            t.TIC_NID AS Id, 
+            t.TIC_CCODIGO AS CodigoTicket, 
+            t.TIC_CDESCRIPCION AS Descripcion,
+            
+            CASE 
+                WHEN u.USU_NID IS NULL 
+                    THEN 'Pendiente'
+                ELSE 
+                    ISNULL(n.NOM_CNOMBRE1, '') + ' ' + ISNULL(n.NOM_CAPELLIDO1, '')
+            END AS UsuarioAsignado,
+
+            e.EST_CNOMBRE AS Estado,
+            a.ASG_DFECHA_ASIGNADA AS FechaAsignacion
+        FROM TBL_TTICKET t
+        LEFT JOIN TBL_TASIGNACION a
+        ON t.TIC_NID = a.TIC_NID
+        LEFT JOIN TBL_RUSUARIO u
+        ON a.USU_NID = u.USU_NID
+        LEFT JOIN TBL_RNOMBRE n
+        ON u.NOM_NID =  n.NOM_NID
+        LEFT JOIN TBL_RESTADOTICKET e
+        ON t.EST_NID =  e.EST_NID
+END

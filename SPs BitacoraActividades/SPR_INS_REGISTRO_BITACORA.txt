@@ -1,0 +1,27 @@
+ALTER PROCEDURE [dbo].[SPR_INS_REGISTRO_BITACORA]
+    @PI_FECHA DATE,
+    @PI_HORAS_TRABAJADAS DECIMAL(10, 2),
+    @PI_OBSERVACION VARCHAR(100),
+    @PI_IDASIGNACION BIGINT,
+    @PI_IDACTIVIDAD BIGINT
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	    INSERT INTO TBL_TBITACORA (
+            BIT_DFECHA,
+            BIT_NHORASTRABAJADAS,
+            BIT_COBSERVACION,
+            ASG_NID,
+            ACT_NID
+        )
+        VALUES(
+            @PI_FECHA,
+            @PI_HORAS_TRABAJADAS,
+            @PI_OBSERVACION,
+            @PI_IDASIGNACION,
+            @PI_IDACTIVIDAD
+        )
+
+END

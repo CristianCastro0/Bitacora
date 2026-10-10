@@ -1,0 +1,23 @@
+ALTER PROCEDURE [dbo].[SPR_IU_AMPLIACION]
+    @PI_HORAS_AMPLIADAS DECIMAL(10, 2),
+    @PI_OBSERVACION VARCHAR(100),
+    @PI_IDASIGNACION BIGINT
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	    INSERT INTO TBL_RAMPLIACION(
+            AMP_NHORAS_AMPLIADAS,
+            AMP_DFECHA,
+            AMP_COBSERVACION,
+            ASG_NID
+        )
+        VALUES(
+            @PI_HORAS_AMPLIADAS,
+            GETDATE(),
+            @PI_OBSERVACION,
+            @PI_IDASIGNACION
+        )
+
+END

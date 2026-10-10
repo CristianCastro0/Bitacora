@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bitácora — Iniciar sesión</title>
+    <link rel="stylesheet" href="CSS/StyleLogin.css" />
+  </head>
+  <body>
+    <div class="login-page">
+      <div class="login-card">
+        <h1 class="login-logo">Bitácora</h1>
+        <p class="login-subtitulo">Inicia sesión con tu usuario de Active Directory</p>
+
+        <form id="loginForm" autocomplete="off">
+          <div class="form-group">
+            <label for="loginUsuario">Usuario</label>
+            <input
+              type="text"
+              id="loginUsuario"
+              placeholder="ej. jperez"
+              autofocus
+              required
+            />
+          </div>
+
+          <p id="loginError" class="login-error" hidden></p>
+
+          <button type="submit" id="loginBtn" class="login-btn">Ingresar</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="JS/ApiService.js"></script>
+    <script src="JS/ScriptLogin.js"></script>
+  </body>
+</html>

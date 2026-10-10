@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bitácora</title>
+    <link rel="stylesheet" href="CSS/StyleInicio.css" />
+  </head>
+  <body>
+        <div class="app-layout">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="logo-container">
+          <h1 class="logo">Bitácora</h1>
+        </div>
+
+        <nav class="menu">
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>Gestión de Tickets</span>
+              <img
+                src="Imagenes/Flechas/flecha-hacia-abajo-para-navegar.png"
+                alt="Flecha"
+                class="arrow-img"
+              />
+            </button>
+            <div class="accordion-content">
+              <a href="AignacionDeTicket.html">Asignación de Tickets</a>
+              <a href="InformacionDeTicket.html">Información de Tickets</a>
+              <a href="AmpliacionEdicionHoras.html">Ampliación y Edición de Horas</a>
+              <a href="AsignarTareas.html">Asignar Tareas</a>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>Gestión de Usuarios</span>
+              <img
+                src="Imagenes/Flechas/flecha-hacia-abajo-para-navegar.png"
+                alt="Flecha"
+                class="arrow-img"
+              />
+            </button>
+            <div class="accordion-content">
+              <a href="MaestroDeUsuarios.html">Maestro de Usuarios</a>
+            </div>
+          </div>
+          <!--
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>Definición de Objetivos</span>
+              <img
+                src="Imagenes/Flechas/flecha-hacia-abajo-para-navegar.png"
+                alt="Flecha"
+                class="arrow-img"
+              />
+            </button>
+            <div class="accordion-content">
+              <a href="#">Objetivos Especificos</a>
+            </div>
+          </div>
+          -->
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="user-box">
+           <span id="correoUsuarioActual">Cargando...</span>
+            <i class="fa-regular fa-user"></i>
+            <button type="button" id="cerrarSesionBtn" class="logout-btn">Cerrar sesión</button>
+          </div>
+        </header>
+
+        <section class="welcome-section">
+          <h2>BIENVENIDO</h2>
+          <p class="letter">A</p>
+          <p class="brand">Bitácora</p>
+        </section>
+      </main>
+    </div>
+    <script src="JS/ApiService.js" ></script>
+    <script src="JS/ScriptInicio.js"></script>
+  </body>
+</html>
